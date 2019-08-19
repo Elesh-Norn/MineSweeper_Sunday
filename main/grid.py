@@ -15,7 +15,7 @@ class Grid:
             (-1, 0),
             (-1, -1),
             (0, -1),
-            (1, -1),
+            (1, -1)
         ]
 
     def create_grid(self, height, width):

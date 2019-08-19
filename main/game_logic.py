@@ -16,7 +16,9 @@ class minesweeper_game:
         planting_mines = self.mines
 
         while planting_mines > 0:
-
+            if planting_mines >= self.x * self.y:
+                planting_mines = 0
+                print("Invalid mines number. 0 mines have been planted.")
             rand_x = random.randint(0, self.x - 1)
             rand_y = random.randint(0, self.y - 1)
 
