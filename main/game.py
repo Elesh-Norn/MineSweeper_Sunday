@@ -97,24 +97,30 @@ class MyGame(arcade.Window):
         # Make sure we are on-grid. It is possible to click in the upper right
         # corner in the margin and go to a grid location that doesn't exist
         if row < self.game.y and column < self.game.x:
-
-            # Flip the location between 1 and 0.
             case = self.game.board.grid[row][column]
-            if button == arcade.MOUSE_BUTTON_LEFT:
-                if case.isreveal is False:
-                    case.isreveal = True
-                    if case.isbomb is True:
-                        print("You lose. Press Enter to restart")
-                    else:
-                        self.game.reveal_count += -1
-                        counter = self.game.board.reveal(case)
-                        self.game.reveal_count += -counter
-                        print(self.game.reveal_count)
+            if self.game.first_click:
+                self.game.initialise_game(row, column)
+                self.game.first_click = False
+                self.left_click(case)
+            else:
+                if button == arcade.MOUSE_BUTTON_LEFT:
+                    self.left_click(case)
+                elif button == arcade.MOUSE_BUTTON_RIGHT:
+                    case.mark()
 
-                        if self.game.reveal_count == 0:
-                            print("You win")
-            elif button == arcade.MOUSE_BUTTON_RIGHT:
-                case.mark()
+    def left_click(self, case):
+        if case.isreveal is False:
+            case.isreveal = True
+            if case.isbomb is True:
+                print("You lose. Press Enter to restart")
+            else:
+                self.game.reveal_count += -1
+                counter = self.game.board.reveal(case)
+                self.game.reveal_count += -counter
+                print(self.game.reveal_count)
+
+                if self.game.reveal_count == 0:
+                    print("You win")
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
